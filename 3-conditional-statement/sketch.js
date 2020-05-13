@@ -4,12 +4,21 @@ let balls = [];
 //create a variable to hold your avatar
 let me;
 
+let mySound;
+
+function preload() {
+  soundFormats('mp3', 'ogg');
+  mySound = loadSound('bruh.mp3');
+}
+
+
 
 function setup() {
   createCanvas(500, 400);
+  fill("black");
 
   //make one avatar called me
-  me = new Avatar(width/2, 300, 3);
+  me = new Avatar(width/7, 300, 7,7);
 
 }
 
@@ -37,23 +46,24 @@ function draw(){
 //avatar class
 class Avatar {
 
-	constructor(x,y, speed){ //every avatar needs an x value, a y value, and a speed
+	constructor(x,y, speed, xspeed){ //every avatar needs an x value, a y value, and a speed
 		    this.x = x;
     		this.y = y;
         this.speed = speed;
+        this.xspeed = xspeed;
 	}
 
 	drawMe(){  // draw the running person
-    		stroke("green");
+    		stroke("yellow");
         strokeWeight(3);
-    		fill("blue");
-		    ellipse(this.x,this.y,20,20);
+    		fill("black");
+		    ellipse(this.x,this.y,40,20);
         line(this.x,this.y, this.x, this.y+40);
-        line(this.x, this.y+40, this.x-20, this.y+60);
-        line(this.x, this.y+40, this.x+10, this.y+50);
-        line(this.x+10, this.y+50, this.x+5, this.y+60);
+        line(this.x, this.y+40, this.x-20, this.y+90);
+        line(this.x, this.y+40, this.x+60, this.y+20);
+        line(this.x+60, this.y+20, this.x+50, this.y+5);
         line(this.x, this.y+15, this.x-10, this.y+25);
-        line(this.x-10, this.y+25, this.x+10, this.y+35);
+        line(this.x-10, this.y+25, this.x+40, this.y+35);
 	}
 
 	moveMe(){
@@ -63,6 +73,12 @@ class Avatar {
 
     if (keyIsDown(DOWN_ARROW)) { // if you hold the down arrow, move down by speed
         this.y += this.speed;
+    }
+    if (keyIsDown(RIGHT_ARROW)) { // if you hold the down arrow, move right by speed
+        this.x += this.xspeed+5;
+    }
+    if (keyIsDown(LEFT_ARROW)) { // if you hold the down arrow, move left by speed
+        this.x += this.xspeed-20;
     }
 	}
 
@@ -87,21 +103,24 @@ class Ball {
 	drawBall(){
     	stroke(0);
       strokeWeight(1);
-    	fill("red");
-		  ellipse(this.x,this.y,10,10);
+    	fill("gray");
+		  ellipse(this.x,this.y,20,15);
 	}
 
 	//update the location of the ball, so it moves across the screen
 	moveBall(){
 		this.x = this.x+ this.speed;
-		this.y = this.y+.5;
+		this.y = this.y+1;
 	}
 
 	//if the ball hits the person, change the speed value to negative (send it in the opposite direction)
-  	bounceBall(){
-    		if (this.x >= me.x-15 && this.x <= me.x+15 && this.y > me.y-40 && this.y < me.y+40){
-      			this.speed = -this.speed;
-    		}
+  bounceBall(){
+      if (this.x >= me.x-15 && this.x <= me.x+15 && this.y > me.y-40 && this.y < me.y+40){
+          this.speed = -this.speed;
+          mySound.setVolume(0.1);
+          mySound.play();
+      }
+
   	}
 
 }

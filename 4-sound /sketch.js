@@ -8,7 +8,7 @@ let mySound;
 
 function preload() {
   soundFormats('mp3', 'ogg');
-  mySound = loadSound('boing1.mp3');
+  mySound = loadSound('bruh.mp3');
 }
 
 function setup() {
